@@ -1,0 +1,20 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  background-color: #f3d7ca;
+  border-radius: 4px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.heading {
+  font-size: 14px;
+  font-weight: bold;
+}
