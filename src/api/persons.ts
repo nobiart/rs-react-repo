@@ -24,10 +24,8 @@ export interface IPerson {
   url: string;
 }
 
-export const getPersons = async () => {
-  const data: Promise<IResponse> = await fetch("https://swapi.dev/api/people/")
+export const getPersons = async (): Promise<IResponse> => {
+  return await fetch("https://swapi.dev/api/people/")
     .then((res) => res.json())
     .catch((err) => console.log(err));
-
-  return data;
 };
