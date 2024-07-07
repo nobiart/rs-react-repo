@@ -10,12 +10,14 @@ import { ErrorFallback } from "./components/error/ErrorFallback.tsx";
 interface IState {
   persons: IPerson[];
   searchTerm: string;
+  isLoading: boolean;
 }
 
 class App extends React.Component {
   state = {
     persons: [],
     searchTerm: "",
+    isLoading: true,
   };
 
   componentDidMount() {
@@ -28,6 +30,7 @@ class App extends React.Component {
         this.setState((prevState) => ({ ...prevState, persons: res.results }));
       }
     });
+    setTimeout(this.turnOffLoading, 500);
   }
 
   componentDidUpdate(_prevProps: Readonly<object>, prevState: IState) {
@@ -41,12 +44,18 @@ class App extends React.Component {
 
   onSubmitHandler = (e: React.SyntheticEvent): void => {
     e.preventDefault();
+    this.setState((prevState) => ({ ...prevState, isLoading: true }));
     const target = e.target as typeof e.target & {
       search: { value: string };
     };
     const searchTerm = target.search.value;
     localStorage.setItem("searchTerm", searchTerm);
     this.setState((prevState) => ({ ...prevState, searchTerm }));
+    setTimeout(this.turnOffLoading, 500);
+  };
+
+  turnOffLoading = () => {
+    this.setState((prevState) => ({ ...prevState, isLoading: false }));
   };
 
   componentWillUnmount() {
@@ -58,7 +67,7 @@ class App extends React.Component {
       <>
         <ErrorBoundary fallback={<ErrorFallback />}>
           <SearchBlock handleSubmit={this.onSubmitHandler} />
-          <Content persons={this.state.persons} />
+          <Content isLoading={this.state.isLoading} persons={this.state.persons} />
         </ErrorBoundary>
       </>
     );
